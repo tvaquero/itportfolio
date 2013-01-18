@@ -1,0 +1,40 @@
+<itPortfolioConfiguration>
+	 <name>My First Portfolio</name>
+	 <authors>Mauro and Tiago</authors>
+	 <date>03/01/2013</date>
+	 <description>This is our first temptative portfolio configuration</description>
+	 <scope>domain-specific</scope>
+	 <target>quality</target>
+	 <size min='3' max='6' />
+	 <schedulingStrategy>round-robin</schedulingStrategy>
+	 <consideredPlanners>
+		<planner id='1' />
+		<planner id='2' />
+		<planner id='3' />
+		<planner id='4' />
+		<planner id='5' />
+		<planner id='6' />
+	 </consideredPlanners>
+ 	<trainingInstances>
+		<instance id='0'>
+			<domain_file>domain.pddl</domain_file>
+			<instance_file>problem1.pddl</instance_file>
+		</instance>
+		<instance id='1'>
+			<domain_file>domain.pddl</domain_file>
+			<instance_file>problem2.pddl</instance_file>
+		</instance>
+	</trainingInstances>
+	<evaluationMetrics>
+		<metric id='1'>
+			<description>CPU time metric</description>
+			<type>cpu-time</type>
+		</metric>
+		<metric id='2'>
+			<description>Quality metric</description>
+			<type>plan-length</type>
+		</metric>
+	</evaluationMetrics>
+	<selectionTechnique>IPC-score</selectionTechnique>
+	<allocationStrategies>heuristic1</allocationStrategies>
+</itPortfolioConfiguration>
