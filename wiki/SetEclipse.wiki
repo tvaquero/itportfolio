@@ -1,8 +1,6 @@
 #labels Setup
 The right way for configuring eclipse for the itporffolio project 
 
-= Details =
-
 Check out itportfolio project (Repository folder: https://itportfolio.googlecode.com/svn/trunk/ ) to a local folder in your computer, e.g. in a folder called ‘Portfoliosrc’ (not in the workspace folder of Eclipse). Wait for checkout completion.
 
  *  Create a new project (New-> Java Project). Name the project 'itportfolio'. In the 'Project layout' section, select "Use project folder as root for sources and class files'. Press Next and on the Source tab press "Link Additional source to the project". Chose the 'PortfolioSource/src' folder were the checkout was done.
