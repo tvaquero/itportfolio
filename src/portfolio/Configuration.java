@@ -80,6 +80,18 @@ public Configuration(String file_name){
 			domains.add(el1.getChildText("domain_file"));
 			training_instances.add(el1.getChildText("instance_file"));
 		}
+
+		//getting available planners from itPlanners.xml		
+		org.jdom.Document itPlannersDoc = null;
+		try{
+			itPlannersDoc = XMLUtilities.readFromFile("input/itPlanners.xml");
+		}catch(Exception e){e.printStackTrace();}		
+		Element itPlanners = null;
+		if (itPlannersDoc != null){
+			itPlanners = itPlannersDoc.getRootElement();			
+		}
+		System.out.println("Planners Available: " + itPlanners.getChild("planners").getChildren().size());
+		
 		//reading planners
 		Element plannersNode = configData.getChild("consideredPlanners");
 		List consideredPlanners = plannersNode.getChildren();
@@ -87,6 +99,8 @@ public Configuration(String file_name){
 		while(it.hasNext()){
 			Element el1 = (Element) it.next();
 			planners.add(el1.getAttributeValue("id"));
+			//TODO: look for the planner in the itPlanners file 
+			// and then add it to the list. Now 'planner' needs to be a list of Element ()
 		}
 		//reading metrics
 		Element metricsNode = configData.getChild("evaluationMetrics");
