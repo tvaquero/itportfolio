@@ -25,6 +25,7 @@ public class Configuration {
 	String target; //runtime, quality, solved_problems (checked in input)
 	int size_min;
 	int size_max;
+  float PlannersTimeout;
 	String scheduling; //tbd the different accepted values
 	Vector<String> training_instances;
 	Vector<String> domains; //a domain for each instance, repeated even if it is always the same one
@@ -93,6 +94,7 @@ public Configuration(String file_name){
 		System.out.println("Planners Available: " + itPlanners.getChild("planners").getChildren().size());
 		
 		//reading planners
+    PlannersTimeout = Float.parseFloat((configData.getChild("consideredPlanners")).getAttributeValue("timeout"));
 		Element plannersNode = configData.getChild("consideredPlanners");
 		List consideredPlanners = plannersNode.getChildren();
 		it = consideredPlanners.iterator();
@@ -125,6 +127,7 @@ public void print_everything(){
 	System.out.println("and is trained on the following instances: ");
 	for(int i=0; i < training_instances.size(); i++)
 		System.out.print(training_instances.elementAt(i)+", ");
+  System.out.println("with a timeout of "+ PlannersTimeout +" ");
 	System.out.println(" and what about the metrics? here they are: ");
 	for(int i=0; i < metrics.size(); i++)
 		(metrics.elementAt(i)).print();
@@ -141,7 +144,7 @@ public void save(String fileName){
 		"\t <target>" + target + "</target>\n" +
 		"\t <size min='"+size_min+"' max='"+size_max+"' />\n" +
 		"\t <schedulingStrategy>"+scheduling+"</schedulingStrategy>\n"+
-		"\t <consideredPlanners>\n";
+		"\t <consideredPlanners timeout='"+ PlannersTimeout +"' >\n";
 	for (int i=0; i < planners.size(); i++)
 		formattedXml+="\t\t<planner id='"+planners.elementAt(i)+"' />\n";
 	formattedXml+="\t </consideredPlanners>\n \t<trainingInstances>\n";
