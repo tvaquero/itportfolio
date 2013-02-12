@@ -1103,14 +1103,9 @@ public class ExecPlanner implements Runnable{
                             Logger.getLogger(ExecPlanner.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
-                    }
-
-                    
+                    }                   
                 }
             }
-            
-
-
         }
 	}
         
@@ -1153,49 +1148,6 @@ public class ExecPlanner implements Runnable{
     	Element xmlPlan = s.solveProblem();
     	XMLUtilities.printXML(xmlPlan);
 	}
-    
-    
-    
-/*    public void plannerTesting() throws InterruptedException{
-    	String[] command = new String[8];
-    	
-    	command[0] = "myPlanners/lpg-td-1.0.exe";
-    	command[1] = "-o";
-    	command[2] = "resources/planners/domain.pddl";
-    	command[3] = "-f";
-    	command[4] = "resources/planners/problem.pddl";
-    	command[5] = "-speed";
-    	command[6] = "-out";
-    	command[7] = "solution";
-    	    	
-    	
-    	ArrayList<String> consoleOutput = new ArrayList<String>();
-    	
-    	Process process;
-		try {
-			process = Runtime.getRuntime().exec(command);
-				
-	    	Scanner sc = new Scanner(process.getInputStream());            		                    
-	    	//Get the planner answer exposed in the console
-	    	if (consoleOutput != null) {
-	            while (sc.hasNextLine()) {
-	            	System.out.println(sc.nextLine());
-	            	//consoleOutput.add(sc.nextLine());
-				}
-			}                
-	        sc.close();                
-	        
-	        process.waitFor();
-	        process.destroy();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		//System.out.println(consoleOutput);
-            
-        
-    }*/
-
-
-	
+   
 	
 }
