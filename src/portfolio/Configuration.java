@@ -1,12 +1,13 @@
 package portfolio;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.io.*;
 import java.util.Vector;
-//import org.jaxen.JaxenException;
-//import org.jaxen.XPath;
-//import org.jaxen.jdom.JDOMXPath;
+import org.jaxen.JaxenException;
+import org.jaxen.XPath;
+import org.jaxen.jdom.JDOMXPath;
 import org.jdom.*;
 //import org.jdom.input.SAXBuilder;
 //import org.jdom.output.Format;
@@ -30,6 +31,7 @@ public class Configuration {
 	Vector<String> training_instances;
 	Vector<String> domains; //a domain for each instance, repeated even if it is always the same one
 	Vector<String> planners; //the list of planners. Later we will use a better structure for them.
+	List<Element> consideredplannerslist;
 	Vector<Metric> metrics;
 	String allocation;
 	String selection;
@@ -40,6 +42,7 @@ public Configuration(){
 	domains=new Vector<String>();
 	planners=new Vector<String>();
 	metrics=new Vector<Metric>();
+	consideredplannerslist = new ArrayList<Element>();
 	return;
 }
 
@@ -48,6 +51,9 @@ public Configuration(String file_name){
 	domains=new Vector<String>();
 	planners=new Vector<String>();
 	metrics=new Vector<Metric>();
+	consideredplannerslist = new ArrayList<Element>();
+	
+	
 	//reading the input xml file
 	Document configDoc = null;
 	try{
@@ -98,10 +104,22 @@ public Configuration(String file_name){
 		List consideredPlanners = plannersNode.getChildren();
 		it = consideredPlanners.iterator();
 		while(it.hasNext()){
-			Element el1 = (Element) it.next();
-			planners.add(el1.getAttributeValue("id"));
+			Element current = (Element) it.next();
+			planners.add(current.getAttributeValue("id"));
 			//TODO: look for the planner in the itPlanners file 
 			// and then add it to the list. Now 'planner' needs to be a list of Element ()
+			if (itPlanners != null){
+				Element correspondingplanner = null;
+			    try {
+			    	XPath path = new JDOMXPath("planners/planner[@id='"+ current.getAttributeValue("id") +"']");
+			    	correspondingplanner = (Element)path.selectSingleNode(itPlanners);
+			    } catch (JaxenException e) {
+			    	e.printStackTrace();
+			    }
+			    if (correspondingplanner != null){
+			    	consideredplannerslist.add(correspondingplanner);
+			    }
+			}	
 		}
 		//reading metrics
 		Element metricsNode = configData.getChild("evaluationMetrics");
@@ -121,8 +139,10 @@ public void print_everything(){
 	System.out.println("They described this portfolio as: \""+description+"\". Its scope is "+scope+", and its target "+target);
 	System.out.println("It has a minimum size of "+size_min+" and a max size of "+size_min+". The scheduling is "+scheduling+" and the allocation is "+allocation+"; the selection technique is "+selection+".");
 	System.out.print("The portfolio considers the following planners: ");
-	for(int i=0; i < planners.size(); i++)
-		System.out.print(planners.elementAt(i)+", ");
+	for(int i=0; i < planners.size(); i++){
+		//System.out.print(planners.elementAt(i)+", ");
+		System.out.print(consideredplannerslist.get(i).getChildText("name")+", ");
+	}
 	System.out.println("and is trained on the following instances: ");
 	for(int i=0; i < training_instances.size(); i++)
 		System.out.print(training_instances.elementAt(i)+", ");
