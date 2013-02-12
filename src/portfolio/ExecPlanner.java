@@ -1132,14 +1132,14 @@ public class ExecPlanner implements Runnable{
     	
 		Element chosenPlanner = null;
 		try {
-			XPath path = new JDOMXPath("planners/planner[@id='6']");			
+			XPath path = new JDOMXPath("planners/planner[@id='2']");			
 			chosenPlanner = (Element)path.selectSingleNode(itPlanners);								
 		} catch (JaxenException e1) {			
 			e1.printStackTrace();
 		}
 			
     	
-    	ExecPlanner s = new ExecPlanner(chosenPlanner, "input/domain.pddl", "input/problem.pddl",false);
+    	ExecPlanner s = new ExecPlanner(chosenPlanner, "input/trainingProblems/blocksworld.pddl", "input/trainingProblems/problem1.pddl",false);
     	//TODO: set the project, domain and problem names
     	s.setProblemName("problem1");
         s.setDomainName("domain1");
