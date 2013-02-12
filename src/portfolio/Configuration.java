@@ -90,7 +90,7 @@ public Configuration(String file_name){
 		//getting available planners from itPlanners.xml		
 		org.jdom.Document itPlannersDoc = null;
 		try{
-			itPlannersDoc = XMLUtilities.readFromFile("input/itPlanners.xml");
+			itPlannersDoc = XMLUtilities.readFromFile("resources/planners/itPlanners.xml");
 		}catch(Exception e){e.printStackTrace();}		
 		Element itPlanners = null;
 		if (itPlannersDoc != null){

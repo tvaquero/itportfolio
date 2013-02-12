@@ -1119,7 +1119,7 @@ public class ExecPlanner implements Runnable{
 //    	 Get planners from itPlanners		
 		org.jdom.Document itPlannersDoc = null;
 		try{
-			itPlannersDoc = XMLUtilities.readFromFile("input/itPlanners.xml");
+			itPlannersDoc = XMLUtilities.readFromFile("resources/planners/itPlanners.xml");
 		}
 		catch(Exception e){
 			e.printStackTrace();
