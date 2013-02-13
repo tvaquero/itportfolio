@@ -7,22 +7,22 @@
 	 <target>quality</target>
 	 <size min='3' max='6' />
 	 <schedulingStrategy>round-robin</schedulingStrategy>
-	 <consideredPlanners>
-		<planner id='1' />
-		<planner id='2' />
-		<planner id='3' />
-		<planner id='4' />
+	 <consideredPlanners timeout='900.0' >
+		<planner id='10' />
 		<planner id='5' />
-		<planner id='6' />
 	 </consideredPlanners>
  	<trainingInstances>
 		<instance id='0'>
-			<domain_file>domain.pddl</domain_file>
-			<instance_file>problem1.pddl</instance_file>
+			<domain_file>input/trainingProblems/blocksworld.pddl</domain_file>
+			<instance_file>input/trainingProblems/problem1.pddl</instance_file>
 		</instance>
 		<instance id='1'>
-			<domain_file>domain.pddl</domain_file>
-			<instance_file>problem2.pddl</instance_file>
+			<domain_file>input/trainingProblems/blocksworld.pddl</domain_file>
+			<instance_file>input/trainingProblems/problem2.pddl</instance_file>
+		</instance>
+		<instance id='2'>
+			<domain_file>input/trainingProblems/blocksworld.pddl</domain_file>
+			<instance_file>input/trainingProblems/problem3.pddl</instance_file>
 		</instance>
 	</trainingInstances>
 	<evaluationMetrics>
