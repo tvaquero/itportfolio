@@ -8,12 +8,8 @@
 	 <size min='3' max='6' />
 	 <schedulingStrategy>round-robin</schedulingStrategy>
 	 <consideredPlanners timeout='900'>
-		<planner id='1' />
-		<planner id='2' />
-		<planner id='3' />
-		<planner id='4' />
+		<planner id='10' />
 		<planner id='5' />
-		<planner id='6' />
 	 </consideredPlanners>
  	<trainingInstances>
 		<instance id='0'>
