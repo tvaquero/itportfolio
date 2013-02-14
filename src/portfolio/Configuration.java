@@ -36,6 +36,7 @@ public class Configuration {
 	GeneratedPlans plans;
 	String allocation;
 	String selection;
+	ConfiguredPortfolio configured;
 	
 public Configuration(){
 	//TO-DO: just load predefined values;
@@ -213,6 +214,14 @@ public void solve_problems(){
 		}
 	}
 	//plans.print_all_plans();
+	return;
+}
+
+public void configure(){
+	plans.setAllocation(allocation);
+	plans.setSelection(selection);
+	plans.setTarget(target);
+	configured=plans.portfolio_configuration(size_min,size_max);
 	return;
 }
 
