@@ -15,6 +15,7 @@ public class Main {
 		portfolio_configuration.print_everything();
 		portfolio_configuration.save("input/output.xml");
 		portfolio_configuration.solve_problems();
+		portfolio_configuration.configure();
 	}
 
 }
