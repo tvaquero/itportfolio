@@ -10,6 +10,7 @@
 	 <consideredPlanners timeout='900'>
 		<planner id='10' />
 		<planner id='5' />
+		<planner id='15' />
 	 </consideredPlanners>
  	<trainingInstances>
 		<instance id='0'>
