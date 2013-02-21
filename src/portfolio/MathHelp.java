@@ -15,7 +15,7 @@ public class MathHelp {
 	    return ret;
 	}
 	
-	public static Vector< Vector<String> > Dispositions (int number_planners, int num_k){
+	public static Vector< Vector<String> > Permutations (int number_planners, int num_k){
 		//function enumer2(varn,vark,res){
 		    boolean ok; 
 			String alfabet= new String();
