@@ -81,20 +81,57 @@ public class GeneratedPlans {
 		//			}
 		//		}
 		String technique=allocation+selection+target;
-		if(technique.equals("IPC-scoresametimequality")){
-			IPC_same_q(min,max,to_configure);
+		System.out.println(technique);
+		if(technique.equals("sametimeIPC-scorequality")){
+			to_configure = IPC_same_q(min,max);
 		}else{
 			System.out.println("Allocation and/or Selection strategy not supported (yet..)");
 		}
 		return to_configure;
 	}
 	
-	private void IPC_same_q(int min, int max, ConfiguredPortfolio configure){
-		Vector<Double> point_planners = new Vector<Double>();
-		for(int i =0; i < Plans.size(); i++)
-			point_planners.add(0.0); 
-		//NON VA BENE, COME GESTISCO MINIMI E MASSIMI NUMERI ? 
-		//COME COLLEGO OGNI INSIEME AL SUO PUNTEGGIO
-		return;
+	private ConfiguredPortfolio IPC_same_q(int min, int max){
+//		ConfiguredPortfolio to_configure = new ConfiguredPortfolio(max);
+		Vector<ConfiguredPortfolio> portfolios; 
+		int position_selected=-1;
+		portfolios = GeneratePortfolios(min,max);
+		for(int i=0; i < portfolios.size(); i++)
+			System.out.println(portfolios.elementAt(i).toString());
+		for(int j=0; j < Plans.size(); j++){
+			//WE HAVE TO WORK HERE. WE HAVE GENERATED ALL THE POSSIBLE PORTFOLIO AND NOW WE SHOULD
+			//COMPARE THEM
+		}
+
+		return portfolios.elementAt(position_selected);
 	}
+	
+	private Vector<ConfiguredPortfolio> GeneratePortfolios(int min, int max){
+		Vector<ConfiguredPortfolio> to_return = new Vector<ConfiguredPortfolio> ();
+		int number_of_planners = Plans.size();
+		//int total_portfolios = 0;
+		//int fact_planners= MathHelp.factorial(number_of_planners);
+		if(max > number_of_planners)
+			max=number_of_planners;
+			//total_portfolios += ( fact_planners/MathHelp.factorial(number_of_planners - i) );
+		Vector<Vector<String>> prova = MathHelp.Dispositions(number_of_planners, max);
+		for(int j=min-1; j < prova.size(); j++){
+			for(int h=0; h< prova.elementAt(j).size(); h++){
+				ConfiguredPortfolio insert = new ConfiguredPortfolio(max);
+				System.out.println("J: "+j+" H: "+h+" "+prova.elementAt(j).elementAt(h));
+				//CONFIGURE THE PORTFOLIO
+				String[] varie = prova.elementAt(j).elementAt(h).split(",");
+				for(int w=0; w < varie.length; w++)
+					insert.addPlanner(Integer.parseInt(varie[w]));
+				to_return.add(insert);
+			}
+		}
+		
+		//System.out.println(total_portfolios);
+		// D() = number_planner! / (number_planner - min) + ..... + number_planner! / (number_planner - max)
+		return to_return;
+	}
+	
+
+	
+	
 }
