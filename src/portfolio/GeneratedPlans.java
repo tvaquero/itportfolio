@@ -108,11 +108,8 @@ public class GeneratedPlans {
 	private Vector<ConfiguredPortfolio> GeneratePortfolios(int min, int max){
 		Vector<ConfiguredPortfolio> to_return = new Vector<ConfiguredPortfolio> ();
 		int number_of_planners = Plans.size();
-		//int total_portfolios = 0;
-		//int fact_planners= MathHelp.factorial(number_of_planners);
 		if(max > number_of_planners)
 			max=number_of_planners;
-			//total_portfolios += ( fact_planners/MathHelp.factorial(number_of_planners - i) );
 		Vector<Vector<String>> prova = MathHelp.Permutations(number_of_planners, max);
 		for(int j=min-1; j < prova.size(); j++){
 			for(int h=0; h< prova.elementAt(j).size(); h++){
@@ -125,9 +122,6 @@ public class GeneratedPlans {
 				to_return.add(insert);
 			}
 		}
-		
-		//System.out.println(total_portfolios);
-		// D() = number_planner! / (number_planner - min) + ..... + number_planner! / (number_planner - max)
 		return to_return;
 	}
 	
