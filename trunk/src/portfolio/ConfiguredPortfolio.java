@@ -51,6 +51,13 @@ public class ConfiguredPortfolio {
 		return;
 	}
 	
+	public int numberPlanners(){
+		int i=0;
+		while(i< orderedPlanners.length && orderedPlanners[i]!=-1)
+			i++;
+		return i;
+	}
+	
 	public Vector<Vector<Float>> getCPU_time() {
 		return CPU_time;
 	}

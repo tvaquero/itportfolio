@@ -221,7 +221,7 @@ public void configure(){
 	plans.setAllocation(allocation);
 	plans.setSelection(selection);
 	plans.setTarget(target);
-	configured=plans.portfolio_configuration(size_min,size_max);
+	configured=plans.portfolio_configuration(size_min,size_max, planners_timeout);
 	return;
 }
 
