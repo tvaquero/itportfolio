@@ -18,6 +18,11 @@ public class ConfiguredPortfolio {
 	public void setScore(double score) {
 		this.score = score;
 	}
+	
+	public void addScore(double add){
+		this.score+=add;
+		return;
+	}
 
 	public ConfiguredPortfolio(int size){
 		CPU_time = new Vector <Vector<Float>>();
@@ -51,6 +56,10 @@ public class ConfiguredPortfolio {
 		return;
 	}
 	
+	public int getPlanner(int id){
+		return orderedPlanners[id];
+	}
+	
 	public int numberPlanners(){
 		int i=0;
 		while(i< orderedPlanners.length && orderedPlanners[i]!=-1)
@@ -60,6 +69,10 @@ public class ConfiguredPortfolio {
 	
 	public Vector<Vector<Float>> getCPU_time() {
 		return CPU_time;
+	}
+	
+	public Vector<Float> getCPU_time_specific(int id) {
+		return CPU_time.elementAt(id);
 	}
 
 	public void setCPU_time(Vector<Vector<Float>> cPU_time) {
