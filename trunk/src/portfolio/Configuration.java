@@ -154,6 +154,7 @@ public void print_everything(){
 	System.out.println(" and what about the metrics? here they are: ");
 	for(int i=0; i < metrics.size(); i++)
 		(metrics.elementAt(i)).print();
+	System.out.println();
 	return;
 }
 
@@ -201,7 +202,7 @@ public void solve_problems(){
 	System.out.println("We are now running the planners on the training instances.. Be patient");
 	for(int i=0; i< consideredplannerslist.size(); i++){
 		for(int j=0; j < training_instances.size(); j++ ){
-			System.out.println("Planner "+ consideredplannerslist.get(i).getChildText("name") + "on problem "+ training_instances.elementAt(j) );
+			System.out.println("Planner "+ consideredplannerslist.get(i).getChildText("name") + " on problem "+ training_instances.elementAt(j) );
 	    	ExecPlanner s = new ExecPlanner(consideredplannerslist.get(i) , domains.elementAt(j), training_instances.elementAt(j) ,false);
 	    	//TODO: set the project, domain and problem names
 	    	s.setProblemName("problem"+ Integer.toString(j));
@@ -214,6 +215,7 @@ public void solve_problems(){
 		}
 	}
 	//plans.print_all_plans();
+	System.out.println();
 	return;
 }
 
