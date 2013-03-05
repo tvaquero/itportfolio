@@ -88,15 +88,23 @@ public class GeneratedPlans {
 		//		}
 		String technique=allocation+selection+target;
 		System.out.println(technique);
+		boolean did_something=false;
 		if(technique.equals("sametimeIPC-scorequality")){
-			to_configure = IPC_same_q(min,max,timeout);
-		}else{
+			to_configure = IPC_same(min,max,timeout,1);
+			did_something=true;
+		}
+		if(technique.equals("sametimeIPC-scoreruntime")){
+			to_configure = IPC_same(min,max,timeout,0);
+			did_something=true;
+		}
+		if(!did_something){
 			System.out.println("Allocation and/or Selection strategy not supported (yet..)");
 		}
 		return to_configure;
 	}
 	
-	private ConfiguredPortfolio IPC_same_q(int min, int max, float timeout){
+	private ConfiguredPortfolio IPC_same(int min, int max, float timeout, int target){
+		//TARGET 1 MEANS QUALITY, TARGET 0 MEANS RUNTIME
 //		ConfiguredPortfolio to_configure = new ConfiguredPortfolio(max);
 		Vector<ConfiguredPortfolio> portfolios; 
 		int position_selected=-1;
@@ -112,18 +120,24 @@ public class GeneratedPlans {
 			}
 			portfolios.elementAt(i).setCPU_time(CPU_t);
 		}
-		calculateBestQuality();
+		if(target==1)
+			calculateBestQuality();
+		else
+			calculateBestCPU();
 		for (int j=0; j < portfolios.size(); j++){
 			// QUA DEVO METTERE POI LA SIMULAZIONE PORTFOLIO PER PORTFOLIO
-			SimulateSequentialExecution(portfolios.elementAt(j));
+			if(target==1)
+				SimulateSequentialExecutionQ(portfolios.elementAt(j));
+			else
+				SimulateSequentialExecutionR(portfolios.elementAt(j));
 		}
 		
-		double max_quality=0;
+		double max_score=0;
 		System.out.println("I configured and tested the following portfolios.");
 		for(int i=0; i < portfolios.size(); i++ ){
 			System.out.println("["+ i + "] " + portfolios.elementAt(i).toString());
-			if(portfolios.elementAt(i).getScore() > max_quality){
-				max_quality=portfolios.elementAt(i).getScore();
+			if(portfolios.elementAt(i).getScore() > max_score){
+				max_score=portfolios.elementAt(i).getScore();
 				position_selected=i;
 			}
 		}
@@ -131,7 +145,7 @@ public class GeneratedPlans {
 		return portfolios.elementAt(position_selected);
 	}
 	
-	private void SimulateSequentialExecution(ConfiguredPortfolio to_simulate){
+	private void SimulateSequentialExecutionQ(ConfiguredPortfolio to_simulate){
 		double quality=java.lang.Double.MAX_VALUE;
 		for(int i=0; i < Plans.get(0).size(); i++ ){
 			for(int j=0; j < to_simulate.numberPlanners(); j++){
@@ -143,6 +157,25 @@ public class GeneratedPlans {
 			}
 			if(quality != java.lang.Double.MAX_VALUE)
 				to_simulate.addScore( this.Best_quality.elementAt(i) / quality );
+		}
+		return;
+	}
+	
+	private void SimulateSequentialExecutionR(ConfiguredPortfolio to_simulate){
+		double runtime=java.lang.Double.MAX_VALUE;
+		double offset=0; //this is needed for counting the planners that failed before...
+		for(int i=0; i < Plans.get(0).size(); i++ ){
+			for(int j=0; j < to_simulate.numberPlanners(); j++){
+				if (Plans.get(to_simulate.getPlanner(j) ).get(i).getChild("plan").getChildren().size() >= 1){
+					if(Float.parseFloat(Plans.get(to_simulate.getPlanner(j) ).get(i).getChild("statistics").getChildText("toolTime")) <= to_simulate.getCPU_time_specific(j).elementAt(0)){
+						runtime = Float.parseFloat(Plans.get(to_simulate.getPlanner(j) ).get(i).getChild("statistics").getChildText("toolTime")) + offset;
+						break;
+					}
+				}
+				offset += to_simulate.getCPU_time_specific(j).elementAt(0);
+			}
+			if(runtime != java.lang.Double.MAX_VALUE)
+				to_simulate.addScore( this.Best_CPU_time.elementAt(i) / runtime );
 		}
 		return;
 	}
@@ -167,6 +200,20 @@ public class GeneratedPlans {
 	}
 	
 	private void calculateBestCPU(){ //fills the best_CPU list
+		double min;
+		for(int i=0; i < Plans.get(0).size(); i++ ){
+			min=-1;
+			for(int j=0; j < Plans.size(); j++ ){
+				if (Plans.get(j).get(i).getChild("plan").getChildren().size() >= 1){
+					if(min==-1)
+						min=Float.parseFloat(Plans.get(j).get(i).getChild("statistics").getChildText("toolTime"));
+					else
+						if(min > Float.parseFloat(Plans.get(j).get(i).getChild("statistics").getChildText("toolTime")))
+							min=Float.parseFloat(Plans.get(j).get(i).getChild("statistics").getChildText("toolTime"));
+				}
+			}
+			Best_CPU_time.add(min);
+		}
 		return;
 	}
 	
