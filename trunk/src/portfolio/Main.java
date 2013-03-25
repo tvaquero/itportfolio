@@ -13,9 +13,9 @@ public class Main {
 		String file="input/input.xml";
 		portfolio_configuration= new Configuration(file);
 		portfolio_configuration.print_everything();
-		portfolio_configuration.save("input/output.xml");
 		portfolio_configuration.solve_problems();
 		portfolio_configuration.configure();
+		portfolio_configuration.save("input/output.xml");
 	}
 
 }
