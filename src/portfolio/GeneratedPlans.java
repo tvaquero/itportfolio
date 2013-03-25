@@ -89,11 +89,11 @@ public class GeneratedPlans {
 		String technique=allocation+selection+target;
 		System.out.println(technique);
 		boolean did_something=false;
-		if(technique.equals("sametimeIPC-scorequality")){
+		if(technique.equals("uniformIPC-scorequality")){
 			to_configure = IPC_same(min,max,timeout,1);
 			did_something=true;
 		}
-		if(technique.equals("sametimeIPC-scoreruntime")){
+		if(technique.equals("uniformIPC-scoreruntime")){
 			to_configure = IPC_same(min,max,timeout,0);
 			did_something=true;
 		}
