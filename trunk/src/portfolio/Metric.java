@@ -1,5 +1,10 @@
 package portfolio;
 
+/*
+ * A class that is used for saving the metric that are considered while solving training problems
+ * A class corresponds to a single Metric, that has a description, an id and a type.
+ */
+
 public class Metric {
 	int id;
 	String description;

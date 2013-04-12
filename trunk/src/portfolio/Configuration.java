@@ -16,6 +16,11 @@ import org.jdom.*;
 
 
 import languages.xml.*;
+/*
+ * This class is used for saving the information related to the structure of the portfolio to configure
+ * The portfolio configured, given structure and training problems, is saved in "configured"
+ */
+
 
 public class Configuration {
 	String name;
@@ -24,18 +29,18 @@ public class Configuration {
 	String description;
 	String scope; //this could be domain-specific, domain-independent, instance-specific. It will be constrained in input phase
 	String target; //runtime, quality, solved_problems (checked in input)
-	int size_min;
-	int size_max;
-    float planners_timeout;
+	int size_min; //minimum number of planners to include in the portfolio to configure
+	int size_max; //maximum number of planners to include in the portfolio to configure
+    float planners_timeout; //timeout on training problems
 	String scheduling; //tbd the different accepted values
 	Vector<String> training_instances;
 	Vector<String> domains; //a domain for each instance, repeated even if it is always the same one
 //	Vector<String> planners; //the list of planners. Later we will use a better structure for them.
-	List<Element> consideredplannerslist;
-	Vector<Metric> metrics;
-	GeneratedPlans plans;
-	String allocation;
-	String selection;
+	List<Element> consideredplannerslist; //the list of planners that are considered for configuring the portfolio
+	Vector<Metric> metrics; // the metrics of planners that are evaluated on training problems 
+	GeneratedPlans plans; //the plans found by considered planners on training problems
+	String allocation; 
+	String selection; 
 	ConfiguredPortfolio configured;
 	
 public Configuration(){
@@ -49,6 +54,10 @@ public Configuration(){
 	return;
 }
 
+/*
+ * This function is used for reading the input configuration file and setting the corresponding
+ * variables of the configuration class
+ */
 public Configuration(String file_name){
 	training_instances=new Vector<String>();
 	domains=new Vector<String>();
@@ -138,6 +147,7 @@ public Configuration(String file_name){
 	return;
 }
 
+// Print the input information of the portfolio to configure
 public void print_everything(){
 	System.out.println("It was the "+date_creation+" when "+authors+" decided to configure "+name+".");
 	System.out.println("They described this portfolio as: \""+description+"\". Its scope is "+scope+", and its target "+target);
@@ -158,6 +168,7 @@ public void print_everything(){
 	return;
 }
 
+//this function is used for saving *only* the information received in input for configuring the portfolio
 public void save(String fileName){
 	String formattedXml ="<itPortfolioConfiguration>\n" +
 		"\t <name>" + name + "</name>\n" +
@@ -198,6 +209,9 @@ public void save(String fileName){
 	return;
 }
 
+
+//run all the planners on the training problems. Output of the planners, in XML format, is saved
+//in "plans"
 public void solve_problems(){
 	System.out.println("We are now running the planners on the training instances.. Be patient");
 	for(int i=0; i< consideredplannerslist.size(); i++){
@@ -219,6 +233,9 @@ public void solve_problems(){
 	return;
 }
 
+
+//this function is used for configuring the portfolio, given the structure and the output of the planners
+//on the training problems
 public void configure(){
 	plans.setAllocation(allocation);
 	plans.setSelection(selection);

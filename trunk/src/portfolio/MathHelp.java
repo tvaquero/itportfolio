@@ -2,8 +2,12 @@ package portfolio;
 
 import java.util.Vector;
 
+
+/*
+ * A set of useful math methods :)
+ */
+
 public class MathHelp {
-//A SET OF USEFUL MATH METHODS
 	private MathHelp(){
 		throw new AssertionError();
 	}

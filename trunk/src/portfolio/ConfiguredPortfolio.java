@@ -3,9 +3,14 @@ package portfolio;
 import java.util.Arrays;
 import java.util.Vector;
 
+/*
+ * This class is used for saving the informatoin of a configured portfolio. It is also used for testing 
+ * different configurations of the same-structured portfolio.
+ * OrderedPlanners is a list of ids of selected planners, CPU_time is a list of the CPU_time that the planner will run.
+ */
+
 public class ConfiguredPortfolio {
-    //THE configured portfolio. OrderedPlanners is a list of ids of selected planners,
-	// CPU_time is a list of the CPU_time that the planner will run.
+
 
 	int[] orderedPlanners;
 	Vector <Vector<Float> > CPU_time;
@@ -48,6 +53,8 @@ public class ConfiguredPortfolio {
 		this.orderedPlanners = orderedPlanners;
 	}
 
+	
+	//add a new planner to the portfolio. -1 means that no planner is present in that position
 	public void addPlanner(int id){
 		int i=0;
 		while(orderedPlanners[i]!=-1)
@@ -60,6 +67,7 @@ public class ConfiguredPortfolio {
 		return orderedPlanners[id];
 	}
 	
+	// returns the number of planners included in the portfolio
 	public int numberPlanners(){
 		int i=0;
 		while(i< orderedPlanners.length && orderedPlanners[i]!=-1)
