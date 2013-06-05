@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Vector;
 
 /*
- * This class is used for saving the informatoin of a configured portfolio. It is also used for testing 
+ * This class is used for saving the information of a configured portfolio. It is also used for testing 
  * different configurations of the same-structured portfolio.
  * OrderedPlanners is a list of ids of selected planners, CPU_time is a list of the CPU_time that the planner will run.
  */
@@ -63,8 +63,38 @@ public class ConfiguredPortfolio {
 		return;
 	}
 	
+	public void addPlanner(int id, Vector<Float> time){
+		int i=0;
+		while(orderedPlanners[i]!=-1)
+			i++;
+		orderedPlanners[i]=id;
+		
+		CPU_time.set(id, time);
+		
+		return;
+	}
+	
+	public void removeLastPlanner(){
+		int i=0;
+		while(orderedPlanners[i]!=-1)
+			i++;
+		if(i!=0){
+			orderedPlanners[i-1]=-1;
+			CPU_time.set(i-1, new Vector<Float>());
+		}
+		return;
+	}
+	
 	public int getPlanner(int id){
 		return orderedPlanners[id];
+	}
+	
+	public boolean presentPlanner (int id){
+		int i=0;
+		while(i< orderedPlanners.length && orderedPlanners[i]!=-1)
+			if(id == orderedPlanners[i])
+				return true;
+		return false;
 	}
 	
 	// returns the number of planners included in the portfolio
@@ -80,13 +110,34 @@ public class ConfiguredPortfolio {
 	}
 	
 	public Vector<Float> getCPU_time_specific(int id) {
-		return CPU_time.elementAt(id);
+		int i=0;
+		for(i=0; i < orderedPlanners.length; i++)
+			if(orderedPlanners[i]==id)
+				break;
+		return CPU_time.elementAt(i);
+	}
+	
+	public void setCPU_time_specific(int id, Vector<Float> change) {
+		int i=0;
+		for(i=0; i < orderedPlanners.length; i++)
+			if(orderedPlanners[i]==id)
+				break;
+		CPU_time.set(i, change);
+		return;
+	}
+	
+	public Float total_CPU_time(){
+		float totale=0;
+		for(int i=0; i < CPU_time.size(); i++)
+			for(int j=0; j < CPU_time.elementAt(i).size();j++)
+				totale+=CPU_time.elementAt(i).elementAt(j);
+		return totale;
 	}
 
 	public void setCPU_time(Vector<Vector<Float>> cPU_time) {
 		CPU_time = cPU_time;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "ConfiguredPortfolio [orderedPlanners="

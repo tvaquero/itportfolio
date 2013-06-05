@@ -102,13 +102,22 @@ public class GeneratedPlans {
 		String technique=allocation+selection+target;
 		System.out.println(technique);
 		boolean did_something=false;
-		if(technique.equals("uniformIPC-scorequality")){
-			to_configure = IPC_same(min,max,timeout,1);
-			did_something=true;
+		if(technique.contains("uniformIPC-score")){
+			if(technique.contains("quality")){
+				to_configure = IPC_same(min,max,timeout,1);
+				did_something=true;
+			}
+			else
+				if(technique.contains("runtime")){
+					to_configure = IPC_same(min,max,timeout,0);
+					did_something=true;
+				}
 		}
-		if(technique.equals("uniformIPC-scoreruntime")){
-			to_configure = IPC_same(min,max,timeout,0);
-			did_something=true;
+		if(technique.contains("heuristic")){
+			if(technique.contains("quality")){
+				to_configure = heuristic(min,max,timeout,1);
+				did_something=true;
+			}
 		}
 		if(!did_something){
 			System.out.println("Allocation and/or Selection strategy not supported (yet..)");
@@ -270,7 +279,76 @@ public class GeneratedPlans {
 		return to_return;
 	}
 	
-
+//function that exploits a heuristic approach for configuring the most promising sequential portfolio
+// target: 1-> quality, 0-> runtime, 2-> coverage
+	private ConfiguredPortfolio heuristic(int min, int max, float timeout, int target){
+		ConfiguredPortfolio to_return = new ConfiguredPortfolio(max);
+		double current_h_value = 0;
+		double score;
+		int was_in;
+		Vector<Float> help;
+		double max_improvement; 
+		int i_max_improvement;
+		float granularity = timeout/10;
+		
+		if (target==1)
+			calculateBestQuality();
+		
+		for (float ciclo = granularity; ciclo <= timeout; ciclo += granularity){
+			  max_improvement=0;
+			  i_max_improvement=-1;
+			  for (int j=0; j < Plans.size(); j++){
+				  to_return.setScore(0.0);
+				  if( !to_return.presentPlanner(j)){
+					  if(to_return.numberPlanners() > max)
+						  continue;
+					  //add the planner to the portfolio with the granularity as CPU time
+					  help = new Vector<Float>();
+					  help.add(granularity);
+					  to_return.addPlanner(j, help);
+					  was_in=0;
+				  }
+				  else{
+					  help=to_return.getCPU_time_specific(j);
+					  help.set(0, help.elementAt(0)+granularity);
+					  to_return.setCPU_time_specific(j, help);
+					  //update the CPU time given to the planner
+					  was_in=1;
+				  }
+				  if (target==1)
+					  SimulateSequentialExecutionQ(to_return);
+				  score=to_return.getScore();
+				  if( score - current_h_value > max_improvement){
+					  max_improvement=score - current_h_value;
+					  i_max_improvement=j;
+				  }
+				  //remove added planner
+				  if(was_in == 0)
+					  to_return.removeLastPlanner();
+				  else{
+					  help=to_return.getCPU_time_specific(j);
+					  help.set(0, help.elementAt(0)-granularity);
+					  to_return.setCPU_time_specific(j, help);
+				  }  
+			  }
+			  if(max_improvement==0)
+				  break;
+			  current_h_value += max_improvement;
+			  if(!to_return.presentPlanner(i_max_improvement)){
+				  help = new Vector<Float>();
+				  help.add(granularity);
+				  to_return.addPlanner(i_max_improvement, help);
+			  }else{
+				  help=to_return.getCPU_time_specific(i_max_improvement);
+				  help.set(0, help.elementAt(0)+granularity);
+				  to_return.setCPU_time_specific(i_max_improvement, help);
+			  }
+			  if(to_return.total_CPU_time() + granularity > timeout)
+				  break;
+		}
+		
+		return to_return;
+	}
 	
 	
 }
